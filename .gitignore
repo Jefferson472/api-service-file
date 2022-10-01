@@ -292,3 +292,5 @@ cython_debug/
 # custom
 
 taskREADME.md
+.vscode/
+media/
