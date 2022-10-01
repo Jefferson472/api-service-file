@@ -11,13 +11,19 @@ class FileListView(generics.ListAPIView):
     queryset = File.objects.all()
     serializer_class = UploadSerializer
 
+    def list(self, request, **kwargs):
+        if kwargs.get('path'):
+            queryset = File.objects.filter(path__contains=kwargs['path'])
+            serializer = UploadSerializer(queryset, many=True)
+            return Response(serializer.data)
+        return super().list(request, **kwargs)
+
 class FileDetailView(generics.RetrieveAPIView):
     queryset = File.objects.all()
     serializer_class = UploadSerializer
 
 
 class UploadViewSet(viewsets.ViewSet):
-    queryset = File.objects.all()
     serializer_class = UploadSerializer
 
     def create(self, request):
