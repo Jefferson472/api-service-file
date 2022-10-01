@@ -8,4 +8,6 @@ class UploadSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = File
-        fields = ["file"]
+        fields = [
+            'id', 'file_name', 'file', 'path', 'created', 'updated'
+        ]
