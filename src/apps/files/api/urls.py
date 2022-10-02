@@ -6,11 +6,11 @@ from .views.UploadViewSet import UploadViewSet
 from .views.FileDetail import FileDetail
 from .views.PathDelete import path_delete
 
+app_name = 'upload_files'
 
 router = routers.DefaultRouter()
 router.register('upload', UploadViewSet, basename='upload')
 
-app_name = 'upload_files'
 
 urlpatterns = [
     path('files/', FileListView.as_view(), name='files_list'),
