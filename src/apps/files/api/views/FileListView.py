@@ -10,20 +10,22 @@ from ...models import File
 
 
 class FileListView(generics.ListAPIView):
-    queryset = File.objects.all()
     serializer_class = UploadSerializer
+
+    def get_queryset(self):
+        return File.objects.filter(user=self.request.user)
 
     def list(self, request, **kwargs):
         if 'path' in kwargs:
             full_path = request.get_full_path()
-            format_list = ['.pdf', '.xml', '.txt']
-            if full_path[-4:] in format_list:
+            ext = full_path[-4:]
+            if ext in ['.pdf', '.xml', '.txt']:
                 file_obj = get_object_or_404(
                     File,
                     file_name=full_path[full_path.rfind('/')+1:],
                     path=full_path[11:full_path.rfind('/')],
+                    user=request.user
                 )
-
                 media_file = os.path.join(settings.MEDIA_ROOT, str(file_obj.file))
 
                 mimetype = mimetypes.guess_type(media_file)
@@ -32,7 +34,10 @@ class FileListView(generics.ListAPIView):
                 response['Content-Type'] = mimetype
                 return response
             else:
-                queryset = File.objects.filter(path__contains=full_path[11:-1])
+                queryset = File.objects.filter(
+                    path__contains=full_path[11:-1],
+                    user=request.user
+                )
                 serializer = UploadSerializer(queryset, many=True)
                 response = serializer.data
             return Response(response, status.HTTP_200_OK)

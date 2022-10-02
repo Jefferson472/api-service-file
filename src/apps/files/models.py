@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 
 def get_path(instance, filename):
-    return f'home/{instance.path}/{filename}'
+    return f'{instance.user}/home/{instance.path}/{filename}'
 
 
 class File(models.Model):

@@ -12,11 +12,15 @@ from apps.files.models import File
 
 
 class FileDetail(RetrieveUpdateDestroyAPIView):
-    queryset = File.objects.all()
     serializer_class = UploadSerializer
 
+    def get_queryset(self):
+        return File.objects.filter(user=self.request.user)
+
     def delete(self, request, *args, **kwargs):
-        file_obj = get_object_or_404(File, pk=kwargs.get('pk'))
+        file_obj = get_object_or_404(
+            File, pk=kwargs.get('pk'), user=request.user
+        )
         os.remove(os.path.join(settings.MEDIA_ROOT, str(file_obj.file)))
         self.destroy(request, *args, **kwargs)
         response = f"File {file_obj.file_name} was deleted"
