@@ -13,6 +13,8 @@ class UploadViewSet(viewsets.ViewSet):
     def create(self, request):
         up_file = request.data['file']
         path = request.data.get('path')
+        if not path:
+            path = ''
 
         ext = up_file.name[up_file.name.rfind('.'):]
         if ext not in ['.pdf', '.xml', '.txt']:
@@ -21,7 +23,7 @@ class UploadViewSet(viewsets.ViewSet):
 
         try:
             obj = File.objects.get(
-                file_name=up_file.name,
+                file_name=str(up_file.name).replace(' ', '_'),
                 path=path,
                 user=request.user
             )
@@ -34,7 +36,7 @@ class UploadViewSet(viewsets.ViewSet):
             File.objects.create(
                 user=request.user,
                 path=path,
-                file_name=up_file.name,
+                file_name=str(up_file.name).replace(' ', '_'),
                 file=up_file,
             ).save()
             response = f"Your file {up_file} was uploaded"

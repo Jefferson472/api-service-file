@@ -21,7 +21,18 @@ class FileDetail(RetrieveUpdateDestroyAPIView):
         file_obj = get_object_or_404(
             File, pk=kwargs.get('pk'), user=request.user
         )
-        os.remove(os.path.join(settings.MEDIA_ROOT, str(file_obj.file)))
+
+        if file_obj.path == '':
+            path = 'home'
+        else:
+            path = f'home/{file_obj.path}'
+
+        os.remove(os.path.join(
+            settings.MEDIA_ROOT,
+            str(request.user),
+            path,
+            str(file_obj.file_name).replace(' ', '_'),
+        ))
         self.destroy(request, *args, **kwargs)
         response = f"File {file_obj.file_name} was deleted"
         return Response(response, status=HTTP_200_OK)

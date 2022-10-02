@@ -3,13 +3,17 @@ from django.contrib.auth.models import User
 
 
 def get_path(instance, filename):
-    return f'{instance.user}/home/{instance.path}/{filename}'
+    path = instance.path
+    if path == 'home' or path == '':        
+        return f'{instance.user}/home/{filename}'
+    else:
+        return f'{instance.user}/home/{path}/{filename}'
 
 
 class File(models.Model):
     user = models.ForeignKey(
         User, related_name='files', on_delete=models.CASCADE)
-    path = models.CharField(default='home', max_length=100)
+    path = models.CharField(default='', max_length=100)
     file = models.FileField(upload_to=get_path)
     file_name = models.CharField(
         default=file.name, max_length=100)
