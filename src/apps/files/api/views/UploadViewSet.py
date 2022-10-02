@@ -14,6 +14,11 @@ class UploadViewSet(viewsets.ViewSet):
         up_file = request.data['file']
         path = request.data.get('path')
 
+        ext = up_file.name[up_file.name.rfind('.'):]
+        if ext not in ['.pdf', '.xml', '.txt']:
+            response = f"Filename extension '{ext}' is not allowed"
+            return Response(response, status=status.HTTP_401_UNAUTHORIZED)
+
         try:
             obj = File.objects.get(file_name=up_file.name, path=path)
             os.remove(os.path.join(settings.MEDIA_ROOT, str(obj.file)))
