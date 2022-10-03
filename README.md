@@ -57,7 +57,6 @@ Para executar o projeto siga os passos abaixo:
 4. A aplicação pode ser acessada no link: http://localhost:8000/api/
 
 ---
-
 ## Endpoints
 ### Autenticação
 Os arquivos são separados por usuário, por é necessário uma autenticação. Utilize as credencial criada no passo 3 da seção , Executando o projeto. 
@@ -71,6 +70,8 @@ Permite o upload de arquivos para uma pasta `/username/home`. Caso exista um `pa
 `api/upload/`
 
 `ALLOW_METHODS = POST, PUT`
+
+Obs.: Atualmente só é possível um arquivo por requisição.
 
 Extensões permitidas: `.pdf, .txt, .xml`
 ```json
@@ -98,7 +99,7 @@ Retorna uma lista de arquivos cadastrados em formato json. Caso exista uma `path
     "updated": "2022-10-02T19:43:31.977652-03:00"
 }
 ```
----
+
 ### Download de Arvquivos
 Baixa o arquivo do caminho especificado
 
@@ -106,7 +107,6 @@ Baixa o arquivo do caminho especificado
 
 `ALLOW_METHODS = GET`
 
----
 
 ### Deletando Pastas e Arquivos
 É possível deletar arquivos e pastas sem conteúdo:
@@ -125,6 +125,7 @@ Para deletas uma pasta:
 
 Obs.: Irá retornar um erro `400` caso a pastas não esteja vazia 
 
+---
 ## Executando os Testes
 Para rodar os testes execute o comando abaixo:
 
