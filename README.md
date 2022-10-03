@@ -37,20 +37,20 @@ Para executar o projeto siga os passos abaixo:
 
 1. Inicie o container com o comando:
 
-```json
+```
     docker compose up -d
 ```
 
 2. Inicialize o banco de dados:
 
-```json
+```
     docker exec -it app bash -c "cd src && python manage.py makemigrations"
     docker exec -it app bash -c "cd src && python manage.py migrate"
 ```
 
 3. Crie um usuário:
 
-```json
+```
     docker exec -it app bash -c "cd src && python manage.py createsuperuser"
 ```
 
